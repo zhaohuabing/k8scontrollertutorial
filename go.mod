@@ -1,4 +1,4 @@
-module github.com/zhaohuabing/k8sControllerTutorial
+module github.com/zhaohuabing/k8scontrollertutorial
 
 go 1.19
 
