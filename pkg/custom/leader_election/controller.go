@@ -216,9 +216,9 @@ func main() {
 	}
 	leaderelection.RunOrDie(context.TODO(), leaderelection.LeaderElectionConfig{
 		Lock:          rl,
-		LeaseDuration: 15 * time.Second,
-		RenewDeadline: 10 * time.Second,
-		RetryPeriod:   2 * time.Second,
+		LeaseDuration: 60 * time.Second,
+		RenewDeadline: 15 * time.Second,
+		RetryPeriod:   5 * time.Second,
 		Callbacks: leaderelection.LeaderCallbacks{
 			OnStartedLeading: func(ctx context.Context) {
 				informerFactory.Start(stop)
@@ -248,7 +248,7 @@ func getResourceLock(client *kubernetes.Clientset) (resourcelock.Interface, erro
 	}
 
 	return resourcelock.New(
-		resourcelock.ConfigMapsLeasesResourceLock,
+		resourcelock.LeasesResourceLock,
 		lockNamespace,
 		lockName,
 		client.CoreV1(),
