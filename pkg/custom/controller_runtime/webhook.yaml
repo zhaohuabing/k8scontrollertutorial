@@ -1,5 +1,5 @@
-kind: ValidatingWebhookConfiguration
 apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
 metadata:
   name: foo
 webhooks:
@@ -7,13 +7,33 @@ webhooks:
     clientConfig:
       service:
         namespace: default
-        name: demo-controller-webhook-server
+        name: sample-controller-webhook-server
         path: /validate-samplecontroller-k8s-io-v1alpha1-foo
     rules:
       - apiGroups: ["samplecontroller.k8s.io"]
         apiVersions: ["v1alpha1"]
         resources: ["foos"]
         operations: ["CREATE", "UPDATE", "DELETE"]
+        scope: Namespaced
+    sideEffects: None
+    admissionReviewVersions: ["v1"]
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: foo
+webhooks:
+  - name: foo.samplecontroller.k8s.io
+    clientConfig:
+      service:
+        namespace: default
+        name: sample-controller-webhook-server
+        path: /validate-samplecontroller-k8s-io-v1alpha1-foo
+    rules:
+      - apiGroups: [ "samplecontroller.k8s.io" ]
+        apiVersions: [ "v1alpha1" ]
+        resources: [ "foos" ]
+        operations: ["CREATE"]
         scope: Namespaced
     sideEffects: None
     admissionReviewVersions: ["v1"]

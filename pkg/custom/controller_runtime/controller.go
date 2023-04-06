@@ -39,7 +39,7 @@ func main() {
 
 	mgr, err := ctrl.NewManager(ctrl.GetConfigOrDie(), ctrl.Options{
 		LeaderElection:          true,
-		LeaderElectionID:        "demo-controller",
+		LeaderElectionID:        "sample-controller",
 		LeaderElectionNamespace: "kube-system",
 	})
 	if err != nil {

@@ -2,7 +2,7 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: demo-controller
+  name: sample-controller
 rules:
   - apiGroups:
       - "coordination.k8s.io"
@@ -28,58 +28,58 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: demo-controller
+  name: sample-controller
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: demo-controller
+  name: sample-controller
 subjects:
   - kind: ServiceAccount
-    name: demo-controller
+    name: sample-controller
     namespace: default
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: demo-controller
+  name: sample-controller
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: demo-controller
-  name: demo-controller
+    app: sample-controller
+  name: sample-controller
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: demo-controller
+      app: sample-controller
   template:
     metadata:
       labels:
-        app: demo-controller
+        app: sample-controller
     spec:
       containers:
-      - name: demo-controller
-        image:  zhaohuabing/demo-controller:controller-runtime
+      - name: sample-controller
+        image:  zhaohuabing/sample-controller:controller-runtime
         imagePullPolicy: Always
         volumeMounts:
-          - name: demo-controller-webhook-crt
+          - name: sample-controller-webhook-crt
             mountPath: /tmp/k8s-webhook-server/serving-certs/
             readOnly: true
       volumes:
-        - name: demo-controller-webhook-crt
+        - name: sample-controller-webhook-crt
           configMap:
-            name: demo-controller-webhook-crt
-      serviceAccount: demo-controller
+            name: sample-controller-webhook-crt
+      serviceAccount: sample-controller
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: demo-controller-webhook-server
+  name: sample-controller-webhook-server
 spec:
   selector:
-    app: demo-controller
+    app: sample-controller
   ports:
     - name: webhook
       protocol: TCP
